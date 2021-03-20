@@ -1,0 +1,104 @@
+//美团实习生2021/3/20
+
+//要求第一行输入为一串字符串，第二行也是一个字符串如
+//第一行 abcdefghijklmnopqrstuvwxyz
+//第二行 meituan
+//我们要遍历第一个String很多遍，直到按顺序凑成第二个String的所有字母，这个过程中会有很多浪费的
+//比如说第一遍遍历，abcdefghijkl "m" nopqrstuvwxyz第一遍只消除了一个"m"进行第二遍，直到第二个String全被找到
+//要求输出在这个查找的过程中一共浪费了多少个字母
+//这里我的思路就是用一个Queue储存第二个String的每一个char,然后每找到一个就把他Poll()出去，直到Queue.isEmpty()==true;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) {
+        FastIO fio = new FastIO();
+        Queue<String> store = new LinkedList<String>();
+        //Queue<Char> store = new LinkedList<Char>();
+        String s = fio.next(); 
+        String a = fio.next();
+        boolean check = true;
+        for (int i=0;i<a.length();i++){// store a in the queue
+            store.offer(a.substring(i,i+1));
+        }
+        int count=0;
+        while(check){
+            for(int i=0;i<s.length();i++){
+                String cur_char = s.substring(i, i+1);
+                if (cur_char.equals(store.peek())){
+                    store.poll();
+                    if(store.isEmpty()==true){check=false;break;}
+                    fio.println("find one char! Now delete it.");
+                    fio.print(store);
+                }
+                else{count++;}
+            }
+            if (check==false){break;}
+        }
+        // System.out.println(count);
+        fio.println(count);
+        fio.close();
+    }
+}
+
+class FastIO extends PrintWriter 
+{ 
+    BufferedReader br; 
+    StringTokenizer st;
+
+    public FastIO() 
+    { 
+        super(new BufferedOutputStream(System.out)); 
+        br = new BufferedReader(new
+                InputStreamReader(System.in));
+    } 
+
+    String next() 
+    { 
+        while (st == null || !st.hasMoreElements()) 
+        { 
+            try
+            { 
+                st = new StringTokenizer(br.readLine()); 
+            } 
+            catch (IOException  e) 
+            { 
+                e.printStackTrace(); 
+            } 
+        } 
+        return st.nextToken(); 
+    } 
+
+    int nextInt() 
+    { 
+        return Integer.parseInt(next()); 
+    } 
+
+    long nextLong() 
+    { 
+        return Long.parseLong(next()); 
+    } 
+
+    double nextDouble() 
+    { 
+        return Double.parseDouble(next()); 
+    } 
+
+    String nextLine() 
+    { 
+        String str = ""; 
+        try
+        { 
+            str = br.readLine(); 
+        } 
+        catch (IOException e) 
+        { 
+            e.printStackTrace(); 
+        } 
+        return str; 
+    } 
+}
